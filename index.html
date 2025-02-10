@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Bokeh Background with Smooth Text Transition</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    body, html, #app {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #app {
+      overflow: hidden;
+      touch-action: pan-up;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      text-shadow: 0 0 5px #ffffff, 0 0 20px #000, 0 0 30px #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Начальное плавное появление контейнера */
+    #hero {
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Плавное изменение прозрачности для заголовка */
+    #app h1 {
+      font-size: 72px;
+      text-transform: uppercase;
+      margin: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    #app a {
+      text-decoration: none;
+      color: #fff;
+    }
+
+    #app canvas {
+      display: block;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <canvas id="webgl-canvas"></canvas>
+    <div id="hero">
+      <h1>Доброй ночи!</h1>
+    </div>
+  </div>
+
+  <script type="module">
+    import { Bokeh1Background } from 'https://cdn.jsdelivr.net/npm/threejs-components@0.0.2/build/backgrounds/bokeh1.cdn.min.js'
+
+    const bokeh1Background = Bokeh1Background(document.getElementById('webgl-canvas'))
+    bokeh1Background.loadMap('https://cdn.jsdelivr.net/npm/threejs-components@0.0.2/build/assets/bokeh-particles2.png')
+    bokeh1Background.setColors([0x6d4862, 0xfd826c, 0x22ccc1])
+
+    // Изменение цветов при клике
+    document.body.addEventListener('click', () => {
+      bokeh1Background.setColors([
+        0xffffff * Math.random(),
+        0xffffff * Math.random(),
+        0xffffff * Math.random()
+      ])
+    })
+
+    // Массив вариантов текста для заголовка
+    const texts = [
+  "Спокойной ночи!",
+  "Good night",
+  "Bonne nuit",
+  "İyi geceler",
+  "おやすみなさい",
+  "Buonanotte",
+  "안녕히 주무세요"
+];
+    let currentTextIndex = 0;
+    const heroText = document.querySelector("#hero h1");
+
+    // Функция для плавной смены текста
+    setInterval(() => {
+      // Сначала плавно исчезаем (opacity: 0)
+      heroText.style.opacity = 0;
+
+      // После завершения анимации (0.5s) меняем текст и возвращаем opacity: 1
+      setTimeout(() => {
+        currentTextIndex = (currentTextIndex + 1) % texts.length;
+        heroText.textContent = texts[currentTextIndex];
+        heroText.style.opacity = 1;
+      }, 500); // 500 мс соответствует длительности CSS-перехода
+    }, 3000);
+  </script>
+</body>
+</html>

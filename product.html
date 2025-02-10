@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Страница товара</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f8f8f8;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .product-card img {
+      max-width: 300px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .product-info {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .product-name {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .product-price {
+      color: #c0392b;
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .product-category {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .product-description {
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 5px 10px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #3498db;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    .back-link:hover {
+      background-color: #2980b9;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Ссылка для возврата в каталог -->
+    <a class="back-link" href="index.html">← Вернуться к каталогу</a>
+    <div id="productDetails"></div>
+  </div>
+
+  <script>
+    // Для простоты продублируем массив здесь
+    const products = [
+      {
+        id: 1,
+        name: "Футболка с принтом",
+        price: 700,
+        category: "Одежда",
+        imgSrc: "https://via.placeholder.com/300x200?text=Футболка",
+        description: "Стильная футболка с ярким принтом. 100% хлопок."
+      },
+      {
+        id: 2,
+        name: "Кроссовки спортивные",
+        price: 3200,
+        category: "Обувь",
+        imgSrc: "https://via.placeholder.com/300x200?text=Кроссовки",
+        description: "Удобные кроссовки для бега и активного отдыха."
+      },
+      {
+        id: 3,
+        name: "Смартфон XYZ",
+        price: 19990,
+        category: "Электроника",
+        imgSrc: "https://via.placeholder.com/300x200?text=Смартфон",
+        description: "Смартфон с отличной камерой и большим экраном."
+      },
+      {
+        id: 4,
+        name: "Джинсы синие",
+        price: 1500,
+        category: "Одежда",
+        imgSrc: "https://via.placeholder.com/300x200?text=Джинсы",
+        description: "Классические синие джинсы прямого кроя."
+      },
+      {
+        id: 5,
+        name: "Ботинки кожаные",
+        price: 4500,
+        category: "Обувь",
+        imgSrc: "https://via.placeholder.com/300x200?text=Ботинки",
+        description: "Кожаные ботинки на шнуровке, комфортные и износостойкие."
+      }
+    ];
+
+    // Получаем ?id=... из URL
+    const params = new URLSearchParams(window.location.search);
+    const productId = parseInt(params.get('id'), 10);
+
+    // Ищем нужный товар
+    const product = products.find((p) => p.id === productId);
+
+    const productDetailsContainer = document.getElementById('productDetails');
+
+    if (!product) {
+      // Если товар не найден, покажем сообщение
+      productDetailsContainer.innerHTML = '<h2>Товар не найден</h2>';
+    } else {
+      // Выводим подробности
+      productDetailsContainer.innerHTML = `
+        <div class="product-card">
+          <img src="${product.imgSrc}" alt="${product.name}" />
+          <div class="product-info">
+            <h2 class="product-name">${product.name}</h2>
+            <div class="product-price">${product.price} руб.</div>
+            <div class="product-category">Категория: ${product.category}</div>
+            <div class="product-description">${product.description}</div>
+          </div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
